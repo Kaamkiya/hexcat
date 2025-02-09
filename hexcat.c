@@ -52,10 +52,15 @@ main(int argc, char *argv[])
 		printf("%08lx: ", size);
 
 		for (int i = 0; i < bytes_read; i += 2) {
-			printf("\033[1;3%dm%02x\033[1;3%dm %02x\033[0m ", colorize(buf[i]), buf[i], colorize(buf[i + 1]), buf[i + 1]);
+			int ca = colorize(buf[i]);
+			int cb = colorize(buf[i+1]);
+			int a = buf[i];
+			int b = buf[i+1];
+
+			printf("\033[1;3%dm%02x\033[1;3%dm %02x\033[0m ", ca, a, cb, b);
 
 			if (i == 7) {
-		 	printf(" ");
+			 	printf(" ");
 			}
 		}
 
@@ -69,6 +74,7 @@ main(int argc, char *argv[])
 		}
 
 		printf(" | ");
+
 		for (int i = 0; i < BUFSIZE; i++) {
 			printf("%c", isprint(buf[i]) ? buf[i] : '.');
 		}
