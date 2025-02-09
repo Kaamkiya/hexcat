@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 .POSIX:
 
 VERSION = 0.1
