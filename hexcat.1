@@ -1,0 +1,41 @@
+.Dd 09 February 2025
+.Dt hexcat 1
+\".Os Linux
+.Sh NAME
+.Nm hexcat
+.Nd An extremely small hexdump tool.
+
+.Sh SYNOPSIS
+.Nm
+.Op Ar file
+
+.Nm
+>
+.Op Ar output file
+
+.Nm
+.Op Ar file
+>
+.Op Ar output file
+
+.Nm
+<
+.Op Ar file
+
+.Sh DESCRIPTION
+An extremely small hex dump tool, written in C.
+
+When you don't specify a file name,
+.Nm
+reads from stdin. This means you can write the output to a file, or you can
+just read the data from stdout.
+
+.Sh AUTHOR
+.Nm
+was authored by Kaamkiya <ziam3.1415@gmail.com>. The source code can be found
+on Codeberg at https://codeberg.org/Kaamkiya/hexcat or GitHub at
+https://github.com/Kaamkiya/hexcat.
+
+.Sh COPYRIGHT
+.Nm
+is licensed under the MIT license.
