@@ -1,0 +1,33 @@
+hexcat
+======
+
+An extremely small hexdump tool.
+
+usage
+-----
+First, clone the repo (or just download hexcat.c, it's the only file you really
+need.)
+
+	$ git clone https://codeberg.org/Kaamkiya/hexcat
+
+Then build it.
+
+	$ cd hexcat
+	$ make
+
+Basic usage:
+
+	$ ./hexcat [path/to/file]
+
+If you don't specify a file to read from, hexcat will read from stdin, so you
+can also pipe to it:
+
+	$ cat some-file | hexcat
+
+It will write the data to stdout, or you can specify a file using redirection:
+
+	$ echo "Let's go fly a kite" | hexcat > hello.txt
+
+license
+-------
+This project is licensed under the MIT license.
