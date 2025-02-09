@@ -64,7 +64,7 @@ main(int argc, char *argv[])
 		}
 
 		while (bytes_read < BUFSIZE) {
-			printf("  ");
+			printf("   ");
 			buf[bytes_read++] = ' ';
 		}
 
