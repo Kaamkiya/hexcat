@@ -3,8 +3,8 @@ Add octal flag
 	If -o is passed, use printf("%o") for octal formatting instead of %x for
 	hexadecimal
 ---
-Add no-ascii flag
-	If -x is passed, do not print the ascii characters alongside the hexdump.
----
 Add uppercase flag
 	If -u is passed, print hexadecimal numbers as uppercase.
+---
+Windows support
+	Checking for a TTY does not work on Windows because <unistd.h> does not exist.
