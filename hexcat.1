@@ -1,42 +1,36 @@
 \" SPDX-License-Identifier: MIT
-.Dd 09 February 2025
+.Dd 2025-02-09
 .Dt hexcat 1
-\".Os Linux
 .Sh NAME
 .Nm hexcat
-.Nd An extremely small hexdump tool.
+.Nd This line parsed for whatis database.
 
 .Sh SYNOPSIS
 .Nm
-.Op Ar file
-
-.Nm
->
-.Op Ar output file
-
-.Nm
-.Op Ar file
->
-.Op Ar output file
-
-.Nm
-<
+.Op Fl ncvh
+.Op Fl o Ar file
 .Op Ar file
 
 .Sh DESCRIPTION
-An extremely small hex dump tool, written in C.
-
-When you don't specify a file name,
 .Nm
-reads from stdin. This means you can write the output to a file, or you can
-just read the data from stdout.
+is an extremely small hex dumper.
 
-.Sh AUTHOR
-.Nm
-was authored by Kaamkiya <ziam3.1415@gmail.com>. The source code can be found
-on Codeberg at https://codeberg.org/Kaamkiya/hexcat or GitHub at
-https://github.com/Kaamkiya/hexcat.
-
-.Sh COPYRIGHT
-.Nm
-is licensed under the MIT license.
+.Sh OPTIONS
+.Pp
+Available flags and descriptions:
+.Bl -tag -width -indent
+.It Fl c
+Colorize output
+.It Fl n
+Don't colorize output.
+.It Fl h
+Print help message and exit.
+.It Fl v
+Print version information and exit.
+.It Fl o Op file
+The file to write output to.
+.El
+.Sh SEE ALSO
+.Xr cat 1 ,
+.Xr hexdump 1 ,
+.Xr xxd 3
