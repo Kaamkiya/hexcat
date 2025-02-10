@@ -33,8 +33,8 @@ colorize(int ch)
 void
 usage()
 {
-	puts("usage: hexcat [-hvnc] [FILE]");
-	exit(1);
+	fputs("usage: hexcat [-hvnc] [FILE]", stderr);
+	exit(0);
 }
 
 int
@@ -48,7 +48,7 @@ main(int argc, char *argv[])
 		else if (!strncmp(pp, "-n", 2)) usecolor = 0;
 		else if (!strncmp(pp, "-c", 2)) usecolor = 1;
 		else if (!strncmp(pp, "-v", 2)) {
-			fprintf(stderr, "hexcat v%f", VERSION);
+			fprintf(stderr, "hexcat v%.1f\n", VERSION);
 			return 0;
 		}
 		argc--;
@@ -57,10 +57,10 @@ main(int argc, char *argv[])
 
 	FILE *fp = stdin;
 
-	if (argc > 0) {
+	if (argc > 1) {
 		fp = fopen(argv[1], "r");
 		if (fp == NULL) {
-			fprintf(stderr, argv[1]);
+			fprintf(stderr, "%s: ", argv[1]);
 			perror("Failed to open file");
 			return 1;
 		}
