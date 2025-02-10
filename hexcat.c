@@ -18,15 +18,9 @@ colorize(int ch)
 	 * Since space characters are printable, check for them before checking for
 	 * other printable characters.
 	 */
-	if (isspace(ch)) {
-		return 3;
-	}
-	if (ch == 0) {
-		return 7;
-	}
-	if (ch == 255) {
-		return 4;
-	}
+	if (isspace(ch)) return 3;
+	if (ch == 0) return 7;
+	if (ch == 255) return 4;
 	return isprint(ch) ? 2 : 1;
 }
 
@@ -75,20 +69,13 @@ main(int argc, char *argv[])
 		printf("%08lx: ", size);
 
 		for (int i = 0; i < bytes_read; i++) {
-			if (usecolor) {
-				printf("\033[1;3%dm%02x\033[0m ", colorize(buf[i]), buf[i]);
-			} else {
-				printf("%02x ", buf[i]);
-			}
+			if (usecolor) printf("\033[1;3%dm%02x\033[0m ", colorize(buf[i]), buf[i]);
+			else printf("%02x ", buf[i]);
 
-			if (i == 7) {
-			 	printf(" ");
-			}
+			if (i == 7) printf(" ");
 		}
 
-		if (bytes_read < 8) {
-			printf(" ");
-		}
+		if (bytes_read < 8) printf(" ");
 
 		while (bytes_read < BUFSIZE) {
 			printf("   ");
@@ -99,24 +86,17 @@ main(int argc, char *argv[])
 
 		for (int i = 0; i < BUFSIZE; i++) {
 			int c = buf[i];
-			if (usecolor) {
-				printf("\033[1;3%dm%c\033[0m", colorize(c), isprint(c) ? c : '.');
-			} else {
-				printf("%c", isprint(c) ? c : '.');
-			}
+			if (usecolor) printf("\033[1;3%dm%c\033[0m", colorize(c), isprint(c) ? c : '.');
+			else printf("%c", isprint(c) ? c : '.');
 		}
 		putchar('\n');
 
 		size += BUFSIZE;
 
-		if (bytes_read < 0) {
-			perror("Read error.");
-		}
+		if (bytes_read < 0) perror("Read error.");
 
 		/* Reset all values in the buffer. */
-		for (int i = 0; i < BUFSIZE; i++) {
-			buf[i] = '\0';
-		}
+		for (int i = 0; i < BUFSIZE; i++) buf[i] = '\0';
 	}
 
 	fclose(fp);
