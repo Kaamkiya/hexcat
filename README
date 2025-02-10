@@ -5,19 +5,22 @@ An extremely small hexdump tool.
 
 usage
 -----
-First, clone the repo (or just download hexcat.c, it's the only file you really
-need.)
+First, clone the repo:
 
 	$ git clone https://codeberg.org/Kaamkiya/hexcat
 
-Then build it.
+Then build from source:
 
 	$ cd hexcat
 	$ make
 
-Basic usage:
+If you want to install it system-wide:
 
-	$ ./hexcat [path/to/file]
+	# make install
+
+Help:
+
+	$ ./hexcat -h
 
 If you don't specify a file to read from, hexcat will read from stdin, so you
 can also pipe to it:
@@ -27,6 +30,8 @@ can also pipe to it:
 It will write the data to stdout, or you can specify a file using redirection:
 
 	$ echo "Let's go fly a kite" | hexcat > hello.txt
+
+Try `hexcat -h` for all available flags.
 
 license
 -------
