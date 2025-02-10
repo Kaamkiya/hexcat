@@ -34,16 +34,19 @@ usage()
 int
 main(int argc, char *argv[])
 {
-	char *pp = NULL;
+	char *arg = NULL;
 
 	while (argc >= 2) {
-		pp = argv[1] + (!strncmp(argv[1], "--", 2) && argv[1][2]);
-		if (!strncmp(pp, "-h", 2)) usage();
-		else if (!strncmp(pp, "-n", 2)) usecolor = 0;
-		else if (!strncmp(pp, "-c", 2)) usecolor = 1;
-		else if (!strncmp(pp, "-v", 2)) {
+		arg = argv[1] + (!strncmp(argv[1], "--", 2) && argv[1][2]);
+		if (!strncmp(arg, "-h", 2)) usage();
+		else if (!strncmp(arg, "-n", 2)) usecolor = 0;
+		else if (!strncmp(arg, "-c", 2)) usecolor = 1;
+		else if (!strncmp(arg, "-v", 2)) {
 			fprintf(stderr, "hexcat v%.1f\n", VERSION);
 			return 0;
+		} else if (!strncmp(arg, "-o", 2)) {
+			argv++;
+			argc--;
 		} else break;
 		argv++;
 		argc--;
