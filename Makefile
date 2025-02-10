@@ -26,7 +26,7 @@ install: all
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
 	mkdir -p $(DESTDIR)$(MANPREFIX)/man1
 	mkdir -p $(DESTDIR)$(DOCPREFIX)/hexcat
-	install -m 644 README LICENSE $(DESTDIR)$(DOCPREFIX)/hexcat
+	install -m 644 README.md LICENSE $(DESTDIR)$(DOCPREFIX)/hexcat
 	install -m 775 hexcat $(DESTDIR)$(PREFIX)/bin
 	sed "s/VERSION/$(VERSION)/g" < hexcat.1 > $(DESTDIR)$(MANPREFIX)/man1/hexcat.1
 	chmod 644 $(DESTDIR)$(MANPREFIX)/man1/hexcat.1
@@ -37,7 +37,7 @@ uninstall: all
 
 dist: clean
 	mkdir -p hexcat-$(VERSION)
-	cp -R Makefile README LICENSE hexcat.c hexcat.1 hexcat-$(VERSION)
+	cp -R Makefile README.md LICENSE hexcat.c hexcat.1 hexcat-$(VERSION)
 	tar -cf - hexcat-$(VERSION) | gzip -c > hexcat-$(VERSION).tar.gz
 	rm -rf hexcat-$(VERSION)
 
