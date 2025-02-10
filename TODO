@@ -1,0 +1,9 @@
+Add octal flag
+	Rename output flag to -O (most people will probably just redirect output).
+	If -o is passed, use printf("%o") for octal formatting instead of %x for
+	hexadecimal
+---
+Add no-ascii flag
+	If -x is passed, do not print the ascii characters alongside the hexdump.
+---
+
