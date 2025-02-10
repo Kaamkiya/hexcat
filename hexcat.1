@@ -3,7 +3,7 @@
 .Dt hexcat 1
 .Sh NAME
 .Nm hexcat
-.Nd This line parsed for whatis database.
+.Nd A tiny, pretty hex dumper.
 
 .Sh SYNOPSIS
 .Nm
@@ -14,6 +14,21 @@
 .Sh DESCRIPTION
 .Nm
 is an extremely small hex dumper.
+
+.Pp
+Explanation of colors:
+.Bl -tag -width -indent
+.It green
+An ASCII printable character.
+.It red
+A non-printable character.
+.It yellow
+A whitespace character.
+.It blue
+Character 255 (hexadecimal: FF).
+.It white
+Character 0 (hexadecimal: 00).
+.El
 
 .Sh OPTIONS
 .Pp
@@ -35,4 +50,4 @@ The file to write output to.
 .Sh SEE ALSO
 .Xr cat 1 ,
 .Xr hexdump 1 ,
-.Xr xxd 3
+.Xr xxd 1
