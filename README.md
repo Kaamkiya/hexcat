@@ -1,38 +1,53 @@
-hexcat
-======
+# hexcat
 
 An extremely small hexdump tool.
 
-usage
------
+## Screenshots
+
+[![The command showing its own binary](assets/demo.png)](assets/demo.png)
+
+## Usage
+
 First, clone the repo:
 
-	$ git clone https://codeberg.org/Kaamkiya/hexcat
+```bash
+$ git clone https://codeberg.org/Kaamkiya/hexcat
+```
 
 Then build from source:
 
-	$ cd hexcat
-	$ make
+```bash
+$ cd hexcat
+$ make
+```
 
 If you want to install it system-wide:
 
-	# make install
+```
+$ sudo make install
+```
 
 Help:
 
-	$ ./hexcat -h
+```
+$ hexcat -h
+```
 
 If you don't specify a file to read from, hexcat will read from stdin, so you
 can also pipe to it:
 
-	$ cat some-file | hexcat
+```
+$ cat some-file | hexcat
+```
 
 It will write the data to stdout, or you can specify a file using redirection:
 
-	$ echo "Let's go fly a kite" | hexcat > hello.txt
+```
+$ echo "Let's go fly a kite" | hexcat > hello.txt
+```
 
 Try `hexcat -h` for all available flags.
 
-license
--------
+## License
+
 This project is licensed under the MIT license.
