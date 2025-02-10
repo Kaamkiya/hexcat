@@ -33,7 +33,7 @@ colorize(int ch)
 void
 usage()
 {
-	fputs("usage: hexcat [-hvnc] [-o FILE] [FILE]", stderr);
+	fputs("usage: hexcat [-hvncx] [-o FILE] [FILE]", stderr);
 	exit(0);
 }
 
@@ -65,8 +65,8 @@ main(int argc, char *argv[])
 
 			ofp = fopen(argv[1], "w");
 			if (ofp == NULL) {
-				fprintf(stderr, "%s: ", argv[1]);
-				perror("Failed to open file");
+				fprintf(stderr, "hexcat: ");
+				perror(argv[1]);
 				return 1;
 			}
 
@@ -81,8 +81,8 @@ main(int argc, char *argv[])
 	if (argc > 1) {
 		fp = fopen(argv[1], "r");
 		if (fp == NULL) {
-			fprintf(stderr, "%s: ", argv[1]);
-			perror("Failed to open file");
+			fprintf(stderr, "hexcat: ");
+			perror(argv[1]);
 			return 1;
 		}
 	}
