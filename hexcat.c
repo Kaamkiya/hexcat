@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#if defined(__unix__) || defined(UNIX) || defined(__linux)
+# include <unistd.h>
+#endif
+
 #include "hexcat.h"
 
 #define VERSION 0.1
@@ -36,6 +40,10 @@ main(int argc, char *argv[])
 	char *arg = NULL;
 	int usecolor = 1;
 	FILE *fp = stdin, *ofp = stdout;
+
+	/* Disable colorized output by default for non-TTYs. */
+	if (!isatty(STDOUT_FILENO)) usecolor = 0;
+
 
 	while (argc >= 2) {
 		arg = argv[1] + (!strncmp(argv[1], "--", 2) && argv[1][2]);
