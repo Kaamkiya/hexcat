@@ -6,4 +6,5 @@ Add octal flag
 Add no-ascii flag
 	If -x is passed, do not print the ascii characters alongside the hexdump.
 ---
-
+Add uppercase flag
+	If -u is passed, print hexadecimal numbers as uppercase.
