@@ -9,7 +9,6 @@
 #define VERSION 0.1
 #define BUFSIZE 16
 
-int usecolor = 1;
 
 char
 colorize(int ch)
@@ -35,6 +34,8 @@ int
 main(int argc, char *argv[])
 {
 	char *arg = NULL;
+	int usecolor = 1;
+	FILE *fp = stdin, *ofp = stdout;
 
 	while (argc >= 2) {
 		arg = argv[1] + (!strncmp(argv[1], "--", 2) && argv[1][2]);
@@ -47,12 +48,17 @@ main(int argc, char *argv[])
 		} else if (!strncmp(arg, "-o", 2)) {
 			argv++;
 			argc--;
+
+			ofp = fopen(argv[1], "w");
+			if (ofp == NULL) {
+				fprintf(stderr, "%s: ", argv[1]);
+				perror("Failed to open file");
+				return 1;
+			}
 		} else break;
 		argv++;
 		argc--;
 	}
-
-	FILE *fp = stdin;
 
 	if (argc > 1) {
 		fp = fopen(argv[1], "r");
@@ -69,30 +75,30 @@ main(int argc, char *argv[])
 
 	while ((bytes_read = fread(buf, sizeof(char), BUFSIZE, fp)) > 0) {
 		/* Print an 8-character length, 0-padded long int in hexadecimal form. */
-		printf("%08lx: ", size);
+		fprintf(ofp, "%08lx: ", size);
 
 		for (int i = 0; i < bytes_read; i++) {
-			if (usecolor) printf("\033[1;3%dm%02x\033[0m ", colorize(buf[i]), buf[i]);
-			else printf("%02x ", buf[i]);
+			if (usecolor) fprintf(ofp, "\033[1;3%dm%02x\033[0m ", colorize(buf[i]), buf[i]);
+			else fprintf(ofp, "%02x ", buf[i]);
 
-			if (i == 7) printf(" ");
+			if (i == 7) fprintf(ofp, " ");
 		}
 
-		if (bytes_read < 8) printf(" ");
+		if (bytes_read < 8) fprintf(ofp, " ");
 
 		while (bytes_read < BUFSIZE) {
-			printf("   ");
+			fprintf(ofp, "   ");
 			buf[bytes_read++] = ' ';
 		}
 
-		printf(" | ");
+		fprintf(ofp, " | ");
 
 		for (int i = 0; i < BUFSIZE; i++) {
 			int c = buf[i];
-			if (usecolor) printf("\033[1;3%dm%c\033[0m", colorize(c), isprint(c) ? c : '.');
-			else printf("%c", isprint(c) ? c : '.');
+			if (usecolor) fprintf(ofp, "\033[1;3%dm%c\033[0m", colorize(c), isprint(c) ? c : '.');
+			else fprintf(ofp, "%c", isprint(c) ? c : '.');
 		}
-		putchar('\n');
+		fputc('\n', ofp);
 
 		size += BUFSIZE;
 
@@ -103,4 +109,5 @@ main(int argc, char *argv[])
 	}
 
 	fclose(fp);
+	fclose(ofp);
 }
