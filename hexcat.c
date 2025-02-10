@@ -42,7 +42,7 @@ main(int argc, char *argv[])
 {
 	char *pp = NULL;
 
-	while (argc > 2) {
+	while (argc >= 2) {
 		pp = argv[1] + (!strncmp(argv[1], "--", 2) && argv[1][2]);
 		if (!strncmp(pp, "-h", 2)) usage();
 		else if (!strncmp(pp, "-n", 2)) usecolor = 0;
@@ -50,9 +50,9 @@ main(int argc, char *argv[])
 		else if (!strncmp(pp, "-v", 2)) {
 			fprintf(stderr, "hexcat v%.1f\n", VERSION);
 			return 0;
-		}
-		argc--;
+		} else break;
 		argv++;
+		argc--;
 	}
 
 	FILE *fp = stdin;
