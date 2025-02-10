@@ -6,5 +6,6 @@ Add octal flag
 Add uppercase flag
 	If -u is passed, print hexadecimal numbers as uppercase.
 ---
-Windows support
-	Checking for a TTY does not work on Windows because <unistd.h> does not exist.
+Add GIF to README
+	Add a VHS GIF to the README. Should feature normal, outputting to file,
+	reading from pipe, nocolor output, and noascii output.

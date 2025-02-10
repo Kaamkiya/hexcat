@@ -7,6 +7,10 @@
 #if defined(__unix__) || defined(UNIX) || defined(__linux)
 # include <unistd.h>
 #endif
+#if defined(WIN32) || defined(CYGWIN)
+# include <io.h>
+#endif
+
 
 #include "hexcat.h"
 
@@ -47,8 +51,7 @@ main(int argc, char *argv[])
 	int printascii = 1;
 
 	/* Disable colorized output by default for non-TTYs. */
-	if (!isatty(STDOUT_FILENO)) usecolor = 0;
-
+	if (!isatty(STDOUT_FILENO)) usecolor = OFF;
 
 	while (argc >= 2) {
 		arg = argv[1] + (!strncmp(argv[1], "--", 2) && argv[1][2]);
