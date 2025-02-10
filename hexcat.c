@@ -38,7 +38,7 @@ int
 main(int argc, char *argv[])
 {
 	char *arg = NULL;
-	int usecolor = 1;
+	enum Colorize usecolor = ON;
 	FILE *fp = stdin, *ofp = stdout;
 
 	/* Disable colorized output by default for non-TTYs. */
@@ -48,8 +48,8 @@ main(int argc, char *argv[])
 	while (argc >= 2) {
 		arg = argv[1] + (!strncmp(argv[1], "--", 2) && argv[1][2]);
 		if (!strncmp(arg, "-h", 2)) usage();
-		else if (!strncmp(arg, "-n", 2)) usecolor = 0;
-		else if (!strncmp(arg, "-c", 2)) usecolor = 1;
+		else if (!strncmp(arg, "-n", 2)) usecolor = OFF;
+		else if (!strncmp(arg, "-c", 2)) usecolor = FORCE;
 		else if (!strncmp(arg, "-v", 2)) {
 			fprintf(stderr, "hexcat v%.1f\n", VERSION);
 			return 0;
@@ -62,6 +62,10 @@ main(int argc, char *argv[])
 				fprintf(stderr, "%s: ", argv[1]);
 				perror("Failed to open file");
 				return 1;
+			}
+
+			if (usecolor != FORCE) {
+				usecolor = OFF;
 			}
 		} else break;
 		argv++;
