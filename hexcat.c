@@ -1,37 +1,64 @@
 /* SPDX-License-Identifier: MIT */
-#include <stdio.h>
 #include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "hexcat.h"
+
+char *argv0; /* Required to come before arg.h */
+#include "arg.h"
 
 #define BUFSIZE 16
+
+int usecolor = 1;
 
 char
 colorize(int ch)
 {
-	if (isprint(ch)) {
-		return 2;
-	}
-
-	if (ch == 37 || ch == 13 || ch == 5) {
+	/*
+	 * Since space characters are printable, check for them before checking for
+	 * other printable characters.
+	 */
+	if (isspace(ch)) {
 		return 3;
 	}
-
 	if (ch == 0) {
 		return 7;
 	}
 	if (ch == 255) {
 		return 4;
 	}
+	return isprint(ch) ? 2 : 1;
+}
 
-	return 1;
+void
+usage()
+{
+	printf("usage: %s [-hv]\n", argv0);
+	exit(1);
 }
 
 int
 main(int argc, char *argv[])
 {
-	FILE *fp = stdin;
+	ARGBEGIN {
+	case 'h':
+		usage();
+		return 0;
+	case 'v':
+		puts("hexcat v0.1");
+		return 0;
+	} ARGEND;
 
-	if (argc > 1) {
-		fp = fopen(argv[1], "r");
+	FILE *fp = stdin;
+	printf("%d\n", usecolor);
+
+	if (argc > 0) {
+		/*
+		 * argv is consumed by arg.h, so argv0 contains the program name and argv
+		 * contains positional arguments.
+		 */
+		fp = fopen(argv[0], "r");
 		if (fp == NULL) {
 			perror("Failed to open file.");
 			return 1;
@@ -43,10 +70,15 @@ main(int argc, char *argv[])
 	size_t bytes_read;
 
 	while ((bytes_read = fread(buf, sizeof(char), BUFSIZE, fp)) > 0) {
+		/* Print an 8-character length, 0-padded long int in hexadecimal form. */
 		printf("%08lx: ", size);
 
 		for (int i = 0; i < bytes_read; i++) {
-			printf("\033[1;3%dm%02x\033[0m ", colorize(buf[i]), buf[i]);
+			if (usecolor) {
+				printf("\033[1;3%dm%02x\033[0m ", colorize(buf[i]), buf[i]);
+			} else {
+				printf("%02x ", buf[i]);
+			}
 
 			if (i == 7) {
 			 	printf(" ");
@@ -66,7 +98,7 @@ main(int argc, char *argv[])
 
 		for (int i = 0; i < BUFSIZE; i++) {
 			int c = buf[i];
-			printf("\033[1;3%dm%c", colorize(c), isprint(c) ? c : '.');
+			printf("\033[1;3%dm%c\033[0m", colorize(c), isprint(c) ? c : '.');
 		}
 		putchar('\n');
 
