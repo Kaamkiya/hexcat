@@ -7,13 +7,7 @@
 char
 colorize(int ch)
 {
-	if ((ch >= 75 && ch <= 80) || (ch >= 90 && ch <= 97) ||
-			(ch >= 107 && ch <= 111) || (ch >= 121 && ch <= 127) ||
-			(ch >= 129 && ch <= 137) || (ch >= 145 && ch <= 154) ||
-			(ch >= 162 && ch <= 169) || (ch >= 192 && ch <= 201) ||
-			(ch >= 208 && ch <= 217) || (ch >= 226 && ch <= 233) ||
-			(ch >= 240 && ch <= 249) || (ch == 189) || (ch == 64) ||
-			(ch == 173) || (ch == 224)) {
+	if (isprint(ch)) {
 		return 2;
 	}
 
@@ -51,13 +45,8 @@ main(int argc, char *argv[])
 	while ((bytes_read = fread(buf, sizeof(char), BUFSIZE, fp)) > 0) {
 		printf("%08lx: ", size);
 
-		for (int i = 0; i < bytes_read; i += 2) {
-			int ca = colorize(buf[i]);
-			int cb = colorize(buf[i+1]);
-			int a = buf[i];
-			int b = buf[i+1];
-
-			printf("\033[1;3%dm%02x\033[1;3%dm %02x\033[0m ", ca, a, cb, b);
+		for (int i = 0; i < bytes_read; i++) {
+			printf("\033[1;3%dm%02x\033[0m ", colorize(buf[i]), buf[i]);
 
 			if (i == 7) {
 			 	printf(" ");
@@ -76,7 +65,8 @@ main(int argc, char *argv[])
 		printf(" | ");
 
 		for (int i = 0; i < BUFSIZE; i++) {
-			printf("%c", isprint(buf[i]) ? buf[i] : '.');
+			int c = buf[i];
+			printf("\033[1;3%dm%c", colorize(c), isprint(c) ? c : '.');
 		}
 		putchar('\n');
 
