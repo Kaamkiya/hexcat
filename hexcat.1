@@ -7,7 +7,7 @@
 
 .Sh SYNOPSIS
 .Nm
-.Op Fl ncvh
+.Op Fl ncxvh
 .Op Fl o Ar file
 .Op Ar file
 
@@ -20,9 +20,11 @@ is an extremely small hex dumper.
 Available flags and descriptions:
 .Bl -tag -width -indent
 .It Fl c
-Colorize output
+Colorize output.
 .It Fl n
 Don't colorize output.
+.It Fl x
+Suppress ASCII output.
 .It Fl h
 Print help message and exit.
 .It Fl v
