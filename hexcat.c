@@ -35,7 +35,7 @@ colorize(int ch)
 void
 usage()
 {
-	fputs("usage: hexcat [-hvncx] [-o FILE] [FILE]\n", stderr);
+	fputs("usage: hexcat [-hvncxu] [-o FILE] [FILE]\n", stderr);
 	exit(0);
 }
 
