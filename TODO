@@ -3,9 +3,6 @@ Add octal flag
 	If -o is passed, use printf("%o") for octal formatting instead of %x for
 	hexadecimal
 ---
-Add uppercase flag
-	If -u is passed, print hexadecimal numbers as uppercase.
----
 Add GIF to README
 	Add a VHS GIF to the README. Should feature normal, outputting to file,
 	reading from pipe, nocolor output, and noascii output.
