@@ -23,26 +23,26 @@ $ make
 
 If you want to install it system-wide:
 
-```
+```bash
 $ sudo make install
 ```
 
 Help:
 
-```
+```bash
 $ hexcat -h
 ```
 
 If you don't specify a file to read from, hexcat will read from stdin, so you
 can also pipe to it:
 
-```
+```bash
 $ cat some-file | hexcat
 ```
 
 It will write the data to stdout, or you can specify a file using redirection:
 
-```
+```bash
 $ echo "Let's go fly a kite" | hexcat > hello.txt
 ```
 
