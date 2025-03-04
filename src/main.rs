@@ -22,7 +22,7 @@ fn colorize(byte: u8) -> i32 {
 fn main() -> io::Result<()> {
     let args: Vec<String> = std::env::args().collect();
 
-    if args.len() < 1 {
+    if args.len() < 2 {
         eprintln!("usage: hexcat [-hvncxu] [-o FILE] [FILE]");
         exit(1);
     }

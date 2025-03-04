@@ -8,23 +8,10 @@ An extremely small hexdump tool.
 
 ## Usage
 
-First, clone the repo:
+You can build `hexcat` with cargo:
 
 ```bash
-$ git clone https://codeberg.org/Kaamkiya/hexcat
-```
-
-Then build from source:
-
-```bash
-$ cd hexcat
-$ make
-```
-
-If you want to install it system-wide:
-
-```bash
-$ sudo make install
+$ cargo install --git https://codeberg.org/Kaamkiya/hexcat
 ```
 
 Help:
