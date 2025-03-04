@@ -58,9 +58,10 @@ fn main() -> io::Result<()> {
         }
     }
 
-    if filename == "" {
-        usage();
-    }
+    let file: &mut dyn Read = match filename {
+        "" => &mut io::stdin(),
+        _ => &mut File::open(filename)?,
+    };
 
     let outfile: &mut dyn Write = match outfilename {
         "" => &mut io::stdout(),
@@ -71,7 +72,6 @@ fn main() -> io::Result<()> {
         use_color = 0;
     }
 
-    let mut file = File::open(filename)?;
 
     let mut buf = [0u8; 16];
     let mut offset = 0;
