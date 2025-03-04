@@ -1,4 +1,4 @@
-use std::io::{self, Read, IsTerminal};
+use std::io::{self, Read, Write, IsTerminal};
 use std::fs::File;
 use std::process::exit;
 
@@ -28,11 +28,15 @@ fn main() -> io::Result<()> {
     let args: Vec<String> = std::env::args().collect();
 
     let mut filename = "";
+    let mut outfilename = "";
     let mut use_color = 1;
     let mut show_ascii = true;
     let mut uppercase = false;
 
+    let mut skip = false;
+
     for i in 1..args.len() {
+        if skip {skip=false;continue;}
         match args.get(i).expect("Failed to iterate arguments.").as_str() {
             "-h" => usage(),
             "-n" => use_color = 0,
@@ -43,6 +47,10 @@ fn main() -> io::Result<()> {
                 println!("hexcat v0.1.1");
                 exit(0);
             },
+            "-o" => {
+                outfilename = args.get(i+1).unwrap().as_str();
+                skip = true;
+            },
             _ => filename = args.get(i).expect("Failed to get argument").as_str(),
         }
     }
@@ -51,14 +59,20 @@ fn main() -> io::Result<()> {
         usage();
     }
 
+
+    let outfile: &mut dyn Write = match outfilename {
+        "" => &mut io::stdout(),
+        _ => &mut File::create(outfilename)?,
+    };
+
+    if (!io::stdout().is_terminal() && use_color != 2) || (outfilename != "" && use_color != 2) {
+        use_color = 0;
+    }
+
     let mut file = File::open(filename)?;
 
     let mut buf = [0u8; 16];
     let mut offset = 0;
-
-    if !std::io::stdout().is_terminal() && use_color != 2 {
-        use_color = 0;
-    }
 
     loop {
         let bytes_read = file.read(&mut buf)?;
@@ -67,45 +81,49 @@ fn main() -> io::Result<()> {
         }
 
         if uppercase {
-            print!("{:08X}: ", offset);
+            write!(outfile, "{:08X}: ", offset)?;
         } else {
-            print!("{:08x}: ", offset);
+            write!(outfile, "{:08x}: ", offset)?;
         }
 
         for &byte in &buf[..bytes_read] {
             if use_color == 0 {
                 if uppercase {
-                    print!("{:02X} ", byte);
+                    write!(outfile, "{:02X} ", byte)?;
                 } else {
-                    print!("{:02x} ", byte);
+                    write!(outfile, "{:02x} ", byte)?;
                 }
             } else {
                 if uppercase {
-                    print!("\x1b[1;3{}m{:02X} \x1b[0m", colorize(byte), byte);
+                    write!(outfile, "\x1b[1;3{}m{:02X} \x1b[0m", colorize(byte), byte)?;
                 } else {
-                    print!("\x1b[1;3{}m{:02x} \x1b[0m", colorize(byte), byte);
+                    write!(outfile, "\x1b[1;3{}m{:02x} \x1b[0m", colorize(byte), byte)?;
                 }
             }
         }
 
         for _ in bytes_read..16 {
-            print!("   ");
+            write!(outfile, "   ")?;
         }
 
         if show_ascii {
-        print!(" | ");
+        write!(outfile, " | ")?;
         for &byte in &buf[..bytes_read] {
-            print!("\x1b[1;3{}m", colorize(byte));
-            if byte.is_ascii() && !byte.is_ascii_control() {
-                print!("{}", byte as char);
-            } else {
-                print!(".");
+            if use_color != 0 {
+                write!(outfile, "\x1b[1;3{}m", colorize(byte))?;
             }
-            print!("\x1b[0m");
+            if byte.is_ascii() && !byte.is_ascii_control() {
+                write!(outfile, "{}", byte as char)?;
+            } else {
+                write!(outfile, ".")?;
+            }
+            if use_color != 0 {
+                write!(outfile, "\x1b[0m")?;
+            }
         }
         }
 
-        println!();
+        write!(outfile, "\n")?;
 
         offset += bytes_read;
     }
