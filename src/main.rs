@@ -1,6 +1,23 @@
 use std::io::{self, Read};
 use std::fs::File;
 
+fn colorize(byte: u8) -> i32 {
+    if byte.is_ascii_whitespace() {
+        return 3;
+    }
+    if byte == 0 {
+        return 7;
+    }
+    if byte == 255 {
+        return 4;
+    }
+    if byte.is_ascii() && !byte.is_ascii_control() {
+        return 2;
+    }
+
+    1
+}
+
 fn main() -> io::Result<()> {
     let mut file = File::open("hexcat.1")?;
 
@@ -16,7 +33,7 @@ fn main() -> io::Result<()> {
         print!("{:08x}: ", offset);
 
         for &byte in &buf[..bytes_read] {
-            print!("{:02x} ", byte);
+            print!("\x1b[1;3{}m{:02x} \x1b[0m", colorize(byte), byte);
         }
 
         for _ in bytes_read..16 {
@@ -25,11 +42,13 @@ fn main() -> io::Result<()> {
 
         print!(" | ");
         for &byte in &buf[..bytes_read] {
+            print!("\x1b[1;3{}m", colorize(byte));
             if byte.is_ascii() && !byte.is_ascii_control() {
                 print!("{}", byte as char);
             } else {
                 print!(".");
             }
+            print!("\x1b[0m");
         }
         println!();
 
