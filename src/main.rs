@@ -1,5 +1,6 @@
 use std::io::{self, Read};
 use std::fs::File;
+use std::process::exit;
 
 fn colorize(byte: u8) -> i32 {
     if byte.is_ascii_whitespace() {
@@ -19,7 +20,14 @@ fn colorize(byte: u8) -> i32 {
 }
 
 fn main() -> io::Result<()> {
-    let mut file = File::open("hexcat.1")?;
+    let args: Vec<String> = std::env::args().collect();
+
+    if args.len() < 1 {
+        eprintln!("usage: hexcat [-hvncxu] [-o FILE] [FILE]");
+        exit(1);
+    }
+
+    let mut file = File::open(&args[1])?;
 
     let mut buf = [0u8; 16];
     let mut offset = 0;
