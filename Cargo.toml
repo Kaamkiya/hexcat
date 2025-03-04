@@ -8,5 +8,10 @@ homepage = "https://codeberg.org/Kaamkiya/hexcat"
 repository = "https://codeberg.org/Kaamkiya/hexcat"
 readme = "README.md"
 keywords = ["hex"]
+authors = ["Zia M <ziam3.1415@gmail.com>"]
+
+[[bin]]
+name = "hexcat"
+path = "src/main.rs"
 
 [dependencies]

@@ -11,6 +11,7 @@ An extremely small hexdump tool.
 You can build `hexcat` with cargo:
 
 ```bash
+$ cargo install hexcat-rs
 $ cargo install --git https://codeberg.org/Kaamkiya/hexcat
 ```
 
