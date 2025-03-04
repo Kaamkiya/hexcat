@@ -70,3 +70,8 @@ $RECYCLE.BIN/
 *.msp
 *.lnk
 hexcat
+
+
+# Added by cargo
+
+/target
