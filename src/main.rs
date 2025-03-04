@@ -19,15 +19,39 @@ fn colorize(byte: u8) -> i32 {
     1
 }
 
+fn usage() {
+    eprintln!("usage: hexcat [-hvncxu] [-o FILE] [FILE]");
+    exit(1);
+}
+
 fn main() -> io::Result<()> {
     let args: Vec<String> = std::env::args().collect();
 
-    if args.len() < 2 {
-        eprintln!("usage: hexcat [-hvncxu] [-o FILE] [FILE]");
-        exit(1);
+    let mut filename = "";
+    let mut use_color = 1;
+    let mut show_ascii = true;
+    let mut uppercase = false;
+
+    for i in 1..args.len() {
+        match args.get(i).expect("Failed to iterate arguments.").as_str() {
+            "-h" => usage(),
+            "-n" => use_color = 0,
+            "-c" => use_color = 2,
+            "-x" => show_ascii = false,
+            "-u" => uppercase = true,
+            "-v" => {
+                println!("hexcat v0.1.1");
+                exit(0);
+            },
+            _ => filename = args.get(i).expect("Failed to get argument").as_str(),
+        }
     }
 
-    let mut file = File::open(&args[1])?;
+    if filename == "" {
+        usage();
+    }
+
+    let mut file = File::open(filename)?;
 
     let mut buf = [0u8; 16];
     let mut offset = 0;
@@ -38,16 +62,25 @@ fn main() -> io::Result<()> {
             break;
         }
 
-        print!("{:08x}: ", offset);
+        if uppercase {
+            print!("{:08X}: ", offset);
+        } else {
+            print!("{:08x}: ", offset);
+        }
 
         for &byte in &buf[..bytes_read] {
-            print!("\x1b[1;3{}m{:02x} \x1b[0m", colorize(byte), byte);
+            if uppercase {
+                print!("\x1b[1;3{}m{:02X} \x1b[0m", colorize(byte), byte);
+            } else {
+                print!("\x1b[1;3{}m{:02x} \x1b[0m", colorize(byte), byte);
+            }
         }
 
         for _ in bytes_read..16 {
             print!("   ");
         }
 
+        if show_ascii {
         print!(" | ");
         for &byte in &buf[..bytes_read] {
             print!("\x1b[1;3{}m", colorize(byte));
@@ -58,6 +91,8 @@ fn main() -> io::Result<()> {
             }
             print!("\x1b[0m");
         }
+        }
+
         println!();
 
         offset += bytes_read;
