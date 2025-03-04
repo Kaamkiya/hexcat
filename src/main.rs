@@ -132,3 +132,18 @@ fn main() -> io::Result<()> {
 
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_colorize() {
+        let test_chars: [u8; 5] = [0, 1, 10, 66, 255];
+        let test_results: [i32; 5] = [7, 1, 3, 2, 4];
+
+        for i in 0..test_chars.len() {
+            assert_eq!(colorize(test_chars[i]), test_results[i]);
+        }
+    }
+}
