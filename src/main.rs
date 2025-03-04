@@ -72,7 +72,6 @@ fn main() -> io::Result<()> {
         use_color = 0;
     }
 
-
     let mut buf = [0u8; 16];
     let mut offset = 0;
 

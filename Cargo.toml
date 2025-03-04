@@ -2,5 +2,12 @@
 name = "hexcat"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+description = "A small, no-dependency hex dumper."
+homepage = "https://codeberg.org/Kaamkiya/hexcat"
+repository = "https://codeberg.org/Kaamkiya/hexcat"
+readme = "README.md"
+keywords = ["hex"]
+categories = ["hex"]
 
 [dependencies]
