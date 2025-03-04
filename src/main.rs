@@ -1,4 +1,4 @@
-use std::io::{self, Read};
+use std::io::{self, Read, IsTerminal};
 use std::fs::File;
 use std::process::exit;
 
@@ -56,6 +56,10 @@ fn main() -> io::Result<()> {
     let mut buf = [0u8; 16];
     let mut offset = 0;
 
+    if !std::io::stdout().is_terminal() && use_color != 2 {
+        use_color = 0;
+    }
+
     loop {
         let bytes_read = file.read(&mut buf)?;
         if bytes_read == 0 {
@@ -69,10 +73,18 @@ fn main() -> io::Result<()> {
         }
 
         for &byte in &buf[..bytes_read] {
-            if uppercase {
-                print!("\x1b[1;3{}m{:02X} \x1b[0m", colorize(byte), byte);
+            if use_color == 0 {
+                if uppercase {
+                    print!("{:02X} ", byte);
+                } else {
+                    print!("{:02x} ", byte);
+                }
             } else {
-                print!("\x1b[1;3{}m{:02x} \x1b[0m", colorize(byte), byte);
+                if uppercase {
+                    print!("\x1b[1;3{}m{:02X} \x1b[0m", colorize(byte), byte);
+                } else {
+                    print!("\x1b[1;3{}m{:02x} \x1b[0m", colorize(byte), byte);
+                }
             }
         }
 
